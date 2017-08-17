@@ -392,11 +392,11 @@ def get_complete_text_autohome(text):
     return text
 
 
-# resp = requests.get("http://k.autohome.com.cn/FrontAPI/GetFeelingByEvalId?evalId=1538569")
-resp = requests.get("http://k.autohome.com.cn/spec/29129/view_1567098_1.html?st=16&piap=0|2951|0|0|1|0|0|0|0|0|1")
-resp.encoding = "gbk"
-text = get_complete_text_autohome(resp.text)
-
-
-print(re.search("<!--@HS_BASE64@-->.*<!--@HS_ZY@-->", text).group())
-print("2")
+# # resp = requests.get("http://k.autohome.com.cn/FrontAPI/GetFeelingByEvalId?evalId=1538569")
+# resp = requests.get("http://k.autohome.com.cn/spec/29129/view_1567098_1.html?st=16&piap=0|2951|0|0|1|0|0|0|0|0|1")
+# resp.encoding = "gbk"
+# text = get_complete_text_autohome(resp.text)
+#
+#
+# print(re.search("<!--@HS_BASE64@-->.*<!--@HS_ZY@-->", text).group())
+# print("2")

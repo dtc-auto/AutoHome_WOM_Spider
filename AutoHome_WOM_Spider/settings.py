@@ -20,18 +20,22 @@ DATABASE_USER_PASSWORD = "ASdf1234"
 DATABASE_NAME = 'BDCI_AUTOHOME_new'
 DATABASE_HOST = '172.16.0.117'
 
-INTO_SQL = 1  # 设置是否启动sql写入
+# 设置是否启动sql写入
+INTO_SQL = 1
 
-STAR_SPIDER_NAME = 'WOM_Spider'  # 设置启动Spider
+# 设置启动Spider
+STAR_SPIDER_NAME = 'WOM_URL_Spider'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+FEED_FORMAT = 'CSV'
+#FEED_URI = 'url.csv'  # 定位输出文件名
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 64
+CONCURRENT_REQUESTS = 32
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
@@ -73,9 +77,9 @@ CONCURRENT_REQUESTS = 64
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'AutoHome_WOM_Spider.pipelines.AutohomeWomSpiderPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'AutoHome_WOM_Spider.pipelines.AutohomeWomSpiderPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

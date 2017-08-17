@@ -54,3 +54,8 @@ class AutohomeWomSpiderItem(scrapy.Item):
     COMMENT_SUPPORT_QUANTITY = scrapy.Field()
     # 有多少人看过这条口碑
     COMMENT_SEEN_QUANTITY = scrapy.Field()
+
+
+class Autohome_WOM_URL_Item(scrapy.Item):
+    CONNENT_URL = scrapy.Field()
+
