@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import pymssql
+import requests
+from lxml import etree
 import re
 import pandas as pd
 import scrapy
@@ -27,21 +29,41 @@ class UrlSpiderSpider(scrapy.Spider):
             sql_list.append(id[0])
         return sql_list
 
+    def get_page_number(url):
+        resp = requests.get(url)
+        resp.encoding = "gbk"
+        text = get_complete_text_autohome(resp.text)
+        text = etree.HTML(text)
+        page_number = text.xpath('//span[@class="page-item-info"]/text()')
+        if page_number:
+            return page_number[0][1:-1]
+        else:
+            return 0
+    #all_page_number = get_page_number('http://k.autohome.com.cn/1004')
+
     sql_models_id = """SELECT models FROM [source].[AutoHome_SPEC_Type] Group by models"""
-    url_list = []
 
     car_id_list = get_list(sql_models_id)
     reqs=[]
     for i in car_id_list:  # i代表从车型的遍历
-        req_0 = scrapy.Request("http://k.autohome.com.cn/%s" % (i))
-        req_1 = scrapy.Request("http://k.autohome.com.cn/%s/stopselling" % (i))
-        reqs.append(req_0.url)
-        reqs.append(req_1.url)
-        for j in range(2, 601):  # j代表评论页数，range(1,3)表示1到2页
-            req_2 = scrapy.Request("http://k.autohome.com.cn/%s/index_%s.html#dataList" % (i, j))
-            req_3 = scrapy.Request("http://k.autohome.com.cn/%s/stopselling/index_%s.html#dataList" % (i, j))
-            reqs.append(req_2.url)
-            reqs.append(req_3.url)
+        req_0 = "http://k.autohome.com.cn/%s" % (i)
+        req_1 = "http://k.autohome.com.cn/%s/stopselling" % (i)
+        reqs.append(req_0)
+        reqs.append(req_1)
+        # 得到页数
+        sell_page_number = get_page_number(req_0)
+        stop_sell_page_number = get_page_number(req_1)
+        # 遍历页数
+        if sell_page_number:
+            for sell_page in sell_page_number:
+                req_2 = "http://k.autohome.com.cn/%s/index_%s.html#dataList" % (i,sell_page)
+                reqs.append(req_2)
+
+        if stop_sell_page_number:
+            for stop_sell_page in stop_sell_page_number:
+                req_3 = "http://k.autohome.com.cn/%s/stopselling/index_%s.html#dataList" % (i,sell_page)
+                reqs.append(req_3)
+                print(reqs)
     start_urls = reqs
 
 
