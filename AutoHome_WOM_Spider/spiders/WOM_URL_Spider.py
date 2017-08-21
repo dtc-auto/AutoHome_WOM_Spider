@@ -77,4 +77,5 @@ class UrlSpiderSpider(scrapy.Spider):
             if js_list:
                 for a in js_list:
                     item['CONNENT_URL'] = a
+                    #print('finish')
                     yield item
