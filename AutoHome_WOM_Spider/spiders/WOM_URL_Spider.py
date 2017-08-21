@@ -30,21 +30,24 @@ class UrlSpiderSpider(scrapy.Spider):
         return sql_list
 
     def get_page_number(url):
-        resp = requests.get(url)
-        resp.encoding = "gbk"
-        text = get_complete_text_autohome(resp.text)
-        text = etree.HTML(text)
-        page_number = text.xpath('//span[@class="page-item-info"]/text()')
-        if page_number:
-            return page_number[0][1:-1]
-        else:
+        try:
+            resp = requests.get(url)
+            resp.encoding = "gbk"
+            text = get_complete_text_autohome(resp.text)
+            text = etree.HTML(text)
+            page_number = text.xpath('//span[@class="page-item-info"]/text()')
+            if page_number:
+                return page_number[0][1:-1]
+            else:
+                return 0
+        except:
             return 0
     #all_page_number = get_page_number('http://k.autohome.com.cn/1004')
 
     sql_models_id = """SELECT models FROM [source].[AutoHome_SPEC_Type] Group by models"""
 
     car_id_list = get_list(sql_models_id)
-    reqs=[]
+    reqs = []
     for i in car_id_list:  # i代表从车型的遍历
         req_0 = "http://k.autohome.com.cn/%s" % (i)
         req_1 = "http://k.autohome.com.cn/%s/stopselling" % (i)
@@ -56,14 +59,14 @@ class UrlSpiderSpider(scrapy.Spider):
         # 遍历页数
         if sell_page_number:
             for sell_page in sell_page_number:
-                req_2 = "http://k.autohome.com.cn/%s/index_%s.html#dataList" % (i,sell_page)
+                req_2 = "http://k.autohome.com.cn/%s/index_%s.html#dataList" % (i, sell_page)
                 reqs.append(req_2)
 
         if stop_sell_page_number:
             for stop_sell_page in stop_sell_page_number:
-                req_3 = "http://k.autohome.com.cn/%s/stopselling/index_%s.html#dataList" % (i,sell_page)
+                req_3 = "http://k.autohome.com.cn/%s/stopselling/index_%s.html#dataList" % (i, sell_page)
                 reqs.append(req_3)
-                print(reqs)
+                print(len(reqs))
     start_urls = reqs
 
 
