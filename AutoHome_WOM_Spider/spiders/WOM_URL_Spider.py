@@ -1,33 +1,16 @@
 # -*- coding: utf-8 -*-
-import pymssql
-import requests
-from lxml import etree
+import codecs
 import re
-import pandas as pd
+import requests
 import scrapy
-from AutoHome_WOM_Spider.Restore import get_complete_text_autohome
+from lxml import etree
+from AutoHome_WOM_Spider.modules.get_models import get_type_id
 from AutoHome_WOM_Spider.items import Autohome_WOM_URL_Item
-from AutoHome_WOM_Spider.settings import *
+from AutoHome_WOM_Spider.modules.Restore import get_complete_text_autohome
+
 
 class UrlSpiderSpider(scrapy.Spider):
     name = "WOM_URL_Spider"
-
-    def get_list(sql):
-        server = DATABASE_SERVER_NAME
-        user = DATABASE_USER_NAME
-        password = DATABASE_USER_PASSWORD
-        database = DATABASE_NAME
-        host = DATABASE_HOST
-        conn = pymssql.connect(user=user,
-                               password=password,
-                               host=host,
-                               database=database)
-        list_df = pd.read_sql_query(sql, conn)
-        sql_url = list_df.values.tolist()
-        sql_list = []
-        for id in sql_url:
-            sql_list.append(id[0])
-        return sql_list
 
     def get_page_number(url):
         try:
@@ -41,16 +24,14 @@ class UrlSpiderSpider(scrapy.Spider):
             else:
                 return 0
         except:
-            return 0
-    #all_page_number = get_page_number('http://k.autohome.com.cn/1004')
+            f = codecs.open('failure_url.txt', 'w', 'utf-8')
+            f.write(url)
 
-    sql_models_id = """SELECT models FROM [source].[AutoHome_SPEC_Type] Group by models"""
-
-    car_id_list = get_list(sql_models_id)
     reqs = []
+    car_id_list = get_type_id()
     for i in car_id_list:  # i代表从车型的遍历
-        req_0 = "http://k.autohome.com.cn/%s" % (i)
-        req_1 = "http://k.autohome.com.cn/%s/stopselling" % (i)
+        req_0 = "http://k.autohome.com.cn/%s" % str(i)
+        req_1 = "http://k.autohome.com.cn/%s/stopselling" % str(i)
         reqs.append(req_0)
         reqs.append(req_1)
         # 得到页数
