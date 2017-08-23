@@ -21,7 +21,7 @@ DATABASE_NAME = 'BDCI_AUTOHOME_new'
 DATABASE_HOST = '172.16.0.117'
 
 # 设置是否启动sql写入
-INTO_SQL = 1
+INTO_SQL = 0
 
 # 设置启动Spider
 STAR_SPIDER_NAME = 'WOM_URL_Spider'
@@ -65,9 +65,9 @@ CONCURRENT_REQUESTS = 32
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'AutoHome_WOM_Spider.middlewares.MyCustomDownloaderMiddleware': 543,
-#}
+# DOWNLOADER_MIDDLEWARES = {
+#    'AutoHome_WOM_Spider.middlewares.MyCustomDownloaderMiddleware': None,
+# }
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
