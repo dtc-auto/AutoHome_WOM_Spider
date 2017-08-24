@@ -21,7 +21,7 @@ DATABASE_NAME = 'BDCI_AUTOHOME_new'
 DATABASE_HOST = '172.16.0.117'
 
 # 设置是否启动sql写入
-INTO_SQL = 1
+INTO_SQL = 0
 
 # 设置启动Spider
 STAR_SPIDER_NAME = 'WOM_URL_Spider'
@@ -35,7 +35,7 @@ FEED_FORMAT = 'CSV'
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 16
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay

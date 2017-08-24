@@ -43,4 +43,5 @@ def get_type_id():
         model_respose = etree.HTML(model_resp)
         models = model_respose.xpath('.//a/@data-value')
         models_list=models_list+models
+        models_list = list(set(models_list))
     return models_list
