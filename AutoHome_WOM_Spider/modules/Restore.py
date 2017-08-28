@@ -384,7 +384,7 @@ def get_complete_text_autohome(text):
 
     def char_replace(m):
         index = int(m.group(1))
-        char = char_list[index]
+        char = char_list[index]  # 溢出
         return char
 
     text = re.sub("<span\s*class=[\'\"]hs_kw(\d+)_[^\'\"]+[\'\"]></span>", char_replace, text)

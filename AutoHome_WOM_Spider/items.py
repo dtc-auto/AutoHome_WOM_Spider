@@ -12,50 +12,57 @@ class AutohomeWomSpiderItem(scrapy.Item):
     # 车ID
     CAR_ID = scrapy.Field()
     # 车名
-    CAR_NAME = scrapy.Field()
+    BRAND = scrapy.Field()
+    MODELKEY = scrapy.Field()
 
-    # 用户ID
-    USER_ID = scrapy.Field()
     # 用户名
-    USER_NAME = scrapy.Field()
+    USERID = scrapy.Field()
 
     # 购买地点
-    PURCHASE_PLACE = scrapy.Field()
+    CITY = scrapy.Field()
     # 购买时间
-    PURCHASE_TIME = scrapy.Field()
+    BUYDATE = scrapy.Field()
     # 裸车购买价
-    CAR_PRICE = scrapy.Field()
+    PRICENET = scrapy.Field()
     # 购车目的
     PURCHASE_PURPOSE = scrapy.Field()
+    # 油耗
+    FUELCONSUM = scrapy.Field()
+    # 公里数
+    MILEAGE = scrapy.Field()
 
     # 评分- 空间
-    SCORE_SPACE = scrapy.Field()
+    SPACESCORE = scrapy.Field()
     # 评分- 动力
-    SCORE_POWER = scrapy.Field()
+    POWERSCORE = scrapy.Field()
     # 评分- 操控
-    SCORE_CONTROL = scrapy.Field()
+    MANIPLTSCORE = scrapy.Field()
     # 评分- 油耗
-    SCORE_FUEL_CONSUMPTION = scrapy.Field()
+    FUELCONSUMSCORE = scrapy.Field()
     # 评分- 舒适性
-    SCORE_COMFORT = scrapy.Field()
+    COMFORTSCORE = scrapy.Field()
     # 评分- 外观
-    SCORE_EXTERIOR = scrapy.Field()
+    APPEARANCESCORE = scrapy.Field()
     # 评分- 内饰
-    SCORE_INTERIOR = scrapy.Field()
+    INTERIORSCORE = scrapy.Field()
     # 评分- 性价比
-    SCORE_COST_EFFECTIVE = scrapy.Field()
+    COSTPERFORMSCORESCORE = scrapy.Field()
 
     # 评论的url
     COMMENT_URL = scrapy.Field()
+    # 评论标题
+    HEADLINE = scrapy.Field()
     # 评论的内容
     COMMENT_CONTENT = scrapy.Field()
+    # 发表时间
+    PUBLISHDATA = scrapy.Field()
+    # 发表方式
+    PUBLISHMODE = scrapy.Field()
 
     # 有多少人支持这条口碑
-    COMMENT_SUPPORT_QUANTITY = scrapy.Field()
+    Supports = scrapy.Field()
     # 有多少人看过这条口碑
-    COMMENT_SEEN_QUANTITY = scrapy.Field()
-
-
-class Autohome_WOM_URL_Item(scrapy.Item):
-    CONNENT_URL = scrapy.Field()
+    Clicks = scrapy.Field()
+    # 有多少人评论这条口碑
+    Comments = scrapy.Field()
 
