@@ -14,6 +14,7 @@ BOT_NAME = 'AutoHome_WOM_Spider'
 SPIDER_MODULES = ['AutoHome_WOM_Spider.spiders']
 NEWSPIDER_MODULE = 'AutoHome_WOM_Spider.spiders'
 
+
 DATABASE_SERVER_NAME = "sqldev02\sql"
 DATABASE_USER_NAME = "spider"
 DATABASE_USER_PASSWORD = "ASdf1234"
