@@ -43,7 +43,6 @@ class AutohomeWomSpiderPipeline(object):
     def url_spider_into(self, item, spider):
         cur = self.conn.cursor()
         self.conn.autocommit(True)
-        connent_url = item['CONNENT_URL'],
 
         create_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         last_update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

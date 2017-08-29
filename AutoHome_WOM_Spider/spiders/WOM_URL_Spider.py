@@ -37,17 +37,17 @@ class UrlSpiderSpider(CrawlSpider):
         text_original = get_complete_text_autohome(response.text)
         text = etree.HTML(text_original)
         item['USERID'] = text.xpath('.//a[@id="ahref_UserId"]/text()')[0]
-
         car_name_list = text.xpath('.//dl[@class="choose-dl"]/dd/a/text()')
-        item['CAR_ID'] = text.xpath('.//dl[@class="choose-dl"]/dd/a/@href')#=================================================
-        item['CITY'] = text.xpath('.//dl[@class="choose-dl"][2]/dd/text()')[0].replace("\n", "").replace("\r", "").replace(" ", "")
+        item['CAR_ID'] = text.xpath('.//dl[@class="choose-dl"]/dd/a/@href')[1].replace("/", "").replace("spec", "")
+        item['CITY'] = text.xpath('.//dl[@class="choose-dl"][2]/dd/text()')[0].replace("\n", "").replace("\r", "").replace(" ", "").replace("\xa0", "")
         item['BRAND'] = car_name_list[0]
         item['MODELKEY'] = car_name_list[1]
         item['BUYDATE'] = text.xpath('.//dd[@class="font-arial bg-blue"]/text()')[0]
         item['PRICENET'] = text.xpath('.//dd[@class="font-arial bg-blue"]/text()')[1].replace("\n", "").replace("\r", "").replace(" ", "")
         FUELCONSUM_MILEAGE_list = text.xpath('.//dd[@class="font-arial bg-blue"]/p/text()')
-        item['FUELCONSUM'] = FUELCONSUM_MILEAGE_list[0]
-        item['MILEAGE'] = FUELCONSUM_MILEAGE_list[1]
+        if FUELCONSUM_MILEAGE_list:
+            item['FUELCONSUM'] = FUELCONSUM_MILEAGE_list[0]
+            item['MILEAGE'] = FUELCONSUM_MILEAGE_list[1]
         score_list = text.xpath('.//span[@class="font-arial c333"]/text()')
         item['SPACESCORE'] = score_list[0]
         item['POWERSCORE'] = score_list[1]
@@ -66,9 +66,22 @@ class UrlSpiderSpider(CrawlSpider):
             item['PUBLISHDATA'] = item['PUBLISHDATA'][len_list-1]
         item['PUBLISHMODE'] = "".join(text.xpath('.//div[@class="title-name name-width-01"]/span/text()'))
         item['COMMENT_URL'] = response.url
-        item['Clicks'] = text.xpath('.//span[@class="fn-left font-arial mr-20"]/span/text()')
-        item['Supports'] = text.xpath('.//label[@class="supportNumber"]/text()')
-        item['Comments'] = text.xpath('.//span[@class="font-arial CommentNumber"]/text()')
-        item['COMMENT_CONTENT'] = re.search("<!--@HS_BASE64@-->.*<!--@HS_ZY@-->", text_original).group().replace("<!--@HS_BASE64@-->","").replace("<!--@HS_ZY@-->", "").replace("<br/>","")
+        item['Clicks'] = text.xpath('.//span[@class="fn-left font-arial mr-20"]/span/text()')[0]
+        item['Supports'] = text.xpath('.//label[@class="supportNumber"]/text()')[0]
+        item['Comments'] = text.xpath('.//span[@class="font-arial CommentNumber"]/text()')[0]
+
+        #  设置断点
+        # pattern = re.compile("class=\"kou-tit\"(.*)", re.S)
+        # text_original_cut = re.findall(pattern, response.text)[0]
+        # text_original_cut = get_complete_text_autohome(text_original_cut)
+        # item['COMMENT_CONTENT'] = re.search("<!--@HS_BASE64@-->.*<!--@HS_ZY@-->", text_original_cut).group().replace("<!--@HS_BASE64@-->","").replace("<!--@HS_ZY@-->", "").replace("<br/>","")
+
+
+        #response.encoding = "gbk"
+        pattern = re.compile("class=\"kou-tit\"(.*)", re.S)
+        text = re.findall(pattern, response.text)[0]
+        text = get_complete_text_autohome(text)
+        item['COMMENT_CONTENT'] = re.search("<!--@HS_BASE64@-->.*<!--@HS_ZY@-->", text).group().replace(
+            "<!--@HS_BASE64@-->", "").replace("<!--@HS_ZY@-->", "").replace("<br/>", "")
 
         yield item
