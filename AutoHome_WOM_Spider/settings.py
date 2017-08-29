@@ -21,7 +21,7 @@ DATABASE_NAME = 'BDCI_AUTOHOME_new'
 DATABASE_HOST = '172.16.0.117'
 
 # 设置是否启动sql写入
-INTO_SQL = 0
+INTO_SQL = 1
 
 # 设置启动Spider
 STAR_SPIDER_NAME = 'WOM_URL_Spider'

@@ -48,9 +48,17 @@ class AutohomeWomSpiderPipeline(object):
         last_update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         cur.execute("""INSERT INTO BDCI_AUTOHOME_new.stg.AutoHome_WOM_Type
-                              (connent_url, create_time, last_update_time)
-                          VALUES (%s,%s,%s)"""
-                    , (connent_url, create_time, last_update_time))
+                              (CAR_ID,BRAND,MODELKEY,USERID,CITY,BUYDATE,PRICENET,PURCHASE_PURPOSE,FUELCONSUM,MILEAGE,SPACESCORE,
+                              POWERSCORE,MANIPLTSCORE,FUELCONSUMSCORE,COMFORTSCORE,APPEARANCESCORE,INTERIORSCORE,COSTPERFORMSCORESCORE,
+                              COMMENT_URL,HEADLINE,COMMENT_CONTENT,PUBLISHDATA,PUBLISHMODE,Supports,Clicks,Comments,
+                              create_time, last_update_time)
+                          VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
+                                  %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
+                                  %s,%s,%s,%s,%s,%s,%s,%s)"""
+                    , (item['CAR_ID'], item['BRAND'], item['MODELKEY'], item['USERID'], item['CITY'], item['BUYDATE'], item['PRICENET'], item['PURCHASE_PURPOSE'], item['FUELCONSUM'], item['MILEAGE'],
+                       item['SPACESCORE'],item['POWERSCORE'], item['MANIPLTSCORE'], item['FUELCONSUMSCORE'], item['COMFORTSCORE'], item['APPEARANCESCORE'], item['INTERIORSCORE'], item['COSTPERFORMSCORESCORE'], item['COMMENT_URL'], item['HEADLINE'],
+                       item['COMMENT_CONTENT'],item['PUBLISHDATA'], item['PUBLISHMODE'], item['Supports'], item['Clicks'], item['Comments'],
+                       create_time, last_update_time))
 
         self.conn.autocommit(False)
         self.conn.commit()
