@@ -14,7 +14,6 @@ BOT_NAME = 'AutoHome_WOM_Spider'
 SPIDER_MODULES = ['AutoHome_WOM_Spider.spiders']
 NEWSPIDER_MODULE = 'AutoHome_WOM_Spider.spiders'
 
-
 DATABASE_SERVER_NAME = "sqldev02\sql"
 DATABASE_USER_NAME = "spider"
 DATABASE_USER_PASSWORD = "ASdf1234"
@@ -35,8 +34,6 @@ STAR_SPIDER_NAME = 'WOM_URL_Spider'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
-FEED_FORMAT = 'CSV'
-#FEED_URI = 'url.csv'  # 定位输出文件名
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False

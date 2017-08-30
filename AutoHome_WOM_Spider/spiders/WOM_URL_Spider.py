@@ -15,7 +15,7 @@ from AutoHome_WOM_Spider.modules.Restore import get_complete_text_autohome
 
 class UrlSpiderSpider(CrawlSpider):
     name = "WOM_URL_Spider"
-
+    # 爬取网页构建车款口碑的入口
     reqs = []
     car_id_list = get_type_id()
     for i in car_id_list:  # i代表从车型的遍历
@@ -24,28 +24,34 @@ class UrlSpiderSpider(CrawlSpider):
         reqs.append(req_0)
         reqs.append(req_1)
     start_urls = list(set(reqs))
-    # start_urls = ["http://k.autohome.com.cn/spec/16903/#pvareaid=102175"]
+
     xpath = {
-        'post': './/div[@class="title-name name-width-01"]/a',
-        'next_page': './/a[@class="page-item-next"]'
+        'post': './/div[@class="title-name name-width-01"]/a',  # 口碑链接
+        'next_page': './/a[@class="page-item-next"]'  # 下一页链接
     }
     rules = (
         Rule(LinkExtractor(restrict_xpaths=xpath['post']), callback='parse_item', follow=True),
         Rule(LinkExtractor(restrict_xpaths=xpath['next_page']))
     )
-
     def parse_item(self, response):
-
+        """
+        原始页面存在加密，本方法输入原始页面响应后进行解密，将解密后的内容使用xpath检索
+        处理报错问题：将原始页面截断，保留有用内容
+        :param response:
+        :return:
+        """
         # 存储网页源代码
         url = response.url
         file_name = re.findall(r"spec\/(.+?)\/view", url)[0]
         if SAVE_SOURCE_DATA == 1:
             Save_Source(str(response.body), file_name)
-
-
+        # 实例化item
         item = AutohomeWomSpiderItem()
+        # 将原始网页进行解码
         text_original = get_complete_text_autohome(response.text)
+        # 将解码后的文本构建为HTML
         text = etree.HTML(text_original)
+        # 解析HTML
         item['USERID'] = str(text.xpath('.//a[@id="ahref_UserId"]/text()')[0])
         car_name_list = text.xpath('.//dl[@class="choose-dl"]/dd/a/text()')
         item['CAR_ID'] = str(text.xpath('.//dl[@class="choose-dl"]/dd/a/@href')[1].replace("/", "").replace("spec", ""))
@@ -79,19 +85,10 @@ class UrlSpiderSpider(CrawlSpider):
         item['Clicks'] = str(text.xpath('.//span[@class="fn-left font-arial mr-20"]/span/text()')[0])
         item['Supports'] = str(text.xpath('.//label[@class="supportNumber"]/text()')[0])
         item['Comments'] = str(text.xpath('.//span[@class="font-arial CommentNumber"]/text()')[0])
-
         #  设置断点
-        # pattern = re.compile("class=\"kou-tit\"(.*)", re.S)
-        # text_original_cut = re.findall(pattern, response.text)[0]
-        # text_original_cut = get_complete_text_autohome(text_original_cut)
-        # item['COMMENT_CONTENT'] = re.search("<!--@HS_BASE64@-->.*<!--@HS_ZY@-->", text_original_cut).group().replace("<!--@HS_BASE64@-->","").replace("<!--@HS_ZY@-->", "").replace("<br/>","")
-
-
-        #response.encoding = "gbk"
         pattern = re.compile("class=\"kou-tit\"(.*)", re.S)
         text = re.findall(pattern, response.text)[0]
         text = get_complete_text_autohome(text)
         item['COMMENT_CONTENT'] = str(re.search("<!--@HS_BASE64@-->.*<!--@HS_ZY@-->", text).group().replace(
             "<!--@HS_BASE64@-->", "").replace("<!--@HS_ZY@-->", "").replace("<br/>", ""))
-
         yield item

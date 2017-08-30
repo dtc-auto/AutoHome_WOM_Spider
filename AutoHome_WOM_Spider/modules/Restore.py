@@ -272,35 +272,35 @@ def get_char(js):
                                   i,
                                   re.X)
         js = js.replace(i, function_name.group(1))
-    print("275",js)
+    print("275", js)
     # 获取所有变量
     var_regex = "var\s+(\w+)=(.*?);\s"
     var_find = re.findall(var_regex, js)
-    print("var_find",var_find)
+    print("var_find", var_find)
     for var_name, var_value in var_find:
         var_value = var_value.strip("\'\"").strip()
         # print(var_name,"---",var_value)
         if "(" in var_value:
             var_value = ";"
         all_var[var_name] = var_value
-    print("all var",all_var)
+    print("all var", all_var)
     # 注释掉 此正则可能会把关键js语句删除掉
     # js = re.sub(var_regex, "", js)
 
     for var_name, var_value in all_var.items():
         js = js.replace(var_name, var_value)
-    print("----282",js)
+    print("----282", js)
     js = re.sub("[\s+']", "", js)
-    print("----284",js)
+    print("----284", js)
     string_m = re.search("(%\w\w(?:%\w\w)+)", js)
     # string = urllib.parse.unquote(string_m.group(1)).encode("utf-8").decode("utf8")
-    print("string_m",string_m.groups())
+    print("string_m", string_m.groups())
     string = urllib.parse.unquote(string_m.group(1)).encode("utf-8").decode("utf8")
     print(string)
     index_m = re.search("([\d,]+(;[\d,]+)+)", js[string_m.end():])
     print(index_m.group())
     string_list = list(string)
-    print("str",len(string_list))
+    print("str", len(string_list))
     # print("string_list",string_list)
     index_list = index_m.group(1).split(";")
     # print("index_list",index_list)
@@ -312,7 +312,7 @@ def get_char(js):
     # deal exception
 
     # print("--max ",type(int(max(index_list))))
-    max_index=0;
+    max_index = 0;
     for word_index_list in index_list:
         _word = ""
         if "," in word_index_list:
@@ -322,14 +322,14 @@ def get_char(js):
             word_index_list = [int(word_index_list)]
         for word_index in word_index_list:
             # print(word_index)
-            if(word_index>max_index):
-                max_index=word_index
+            if (word_index > max_index):
+                max_index = word_index
             try:
                 string_list[word_index]
             except Exception as e:
-                exflag=1;
+                exflag = 1;
     print(max_index)
-    print("exflag",exflag)
+    print("exflag", exflag)
     less = max_index - len(string_list)
     print(less)
     for word_index_list in index_list:
@@ -348,7 +348,7 @@ def get_char(js):
             # print("word_index",word_index)
             # print("string_list[word_index]",string_list[word_index])
             try:
-                _word += string_list[word_index-1-less]
+                _word += string_list[word_index - 1 - less]
             except Exception as e:
                 print(e)
 
@@ -364,16 +364,16 @@ def get_char(js):
 
 
 def get_complete_text_autohome(text):
-    #print("text0",text)
-    text = text.replace(r"\u0027","'").replace(r"\u003e",">").replace(r"\u003c","<")
-    #print("text1",text)
+    # print("text0",text)
+    text = text.replace(r"\u0027", "'").replace(r"\u003e", ">").replace(r"\u003c", "<")
+    # print("text1",text)
     js = re.search("<!--@HS_ZY@--><script>([\s\S]+)\(document\);</script>", text)
-    #print("find : %s" % js.group())
+    # print("find : %s" % js.group())
     if not js:
         print("  if not js:")
         return text
     try:
-        #print("try0")
+        # print("try0")
         char_list = get_char(js.group(1))
         print("try111")
 
@@ -392,11 +392,10 @@ def get_complete_text_autohome(text):
     return text
 
 
-# # resp = requests.get("http://k.autohome.com.cn/FrontAPI/GetFeelingByEvalId?evalId=1538569")
-# resp = requests.get("http://k.autohome.com.cn/spec/29129/view_1567098_1.html?st=16&piap=0|2951|0|0|1|0|0|0|0|0|1")
-# resp.encoding = "gbk"
-# text = get_complete_text_autohome(resp.text)
-#
-#
-# print(re.search("<!--@HS_BASE64@-->.*<!--@HS_ZY@-->", text).group())
-# print("2")
+if __name__ == "__main__":
+    resp = requests.get("http://k.autohome.com.cn/FrontAPI/GetFeelingByEvalId?evalId=1538569")
+    # resp = requests.get("http://k.autohome.com.cn/spec/29129/view_1567098_1.html?st=16&piap=0|2951|0|0|1|0|0|0|0|0|1")
+    resp.encoding = "gbk"
+    text = get_complete_text_autohome(resp.text)
+    print(re.search("<!--@HS_BASE64@-->.*<!--@HS_ZY@-->", text).group())
+    print("2")

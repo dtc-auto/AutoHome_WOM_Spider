@@ -8,9 +8,9 @@ headers = {
 }
 
 
-
 def __init__(self):
     pass
+
 
 def process_request(url):  # 返回响应
     try:
@@ -22,6 +22,7 @@ def process_request(url):  # 返回响应
     except:
         # time.sleep(10)
         return process_request(url)
+
 
 def get_type_id():
     start_url_list = [
@@ -42,6 +43,6 @@ def get_type_id():
         model_resp = process_request(url_t)
         model_respose = etree.HTML(model_resp)
         models = model_respose.xpath('.//a/@data-value')
-        models_list=models_list+models
+        models_list = models_list + models
         models_list = list(set(models_list))
     return models_list

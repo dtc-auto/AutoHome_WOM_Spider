@@ -36,9 +36,7 @@ class AutohomeWomSpiderPipeline(object):
         if self.into_sql == 1:
             if self.star_spider_name == 'WOM_URL_Spider':
                 self.url_spider_into(item, spider)
-
         return item
-        # 便于理解,根据spider_name，分2次写入sql
 
     def url_spider_into(self, item, spider):
         cur = self.conn.cursor()
@@ -53,7 +51,6 @@ class AutohomeWomSpiderPipeline(object):
         PURCHASE_PURPOSE = item['PURCHASE_PURPOSE']
         FUELCONSUM = item['FUELCONSUM']
         MILEAGE = item['MILEAGE']
-
         SPACESCORE = item['SPACESCORE']
         POWERSCORE = item['POWERSCORE']
         MANIPLTSCORE = item['MANIPLTSCORE']
@@ -65,8 +62,6 @@ class AutohomeWomSpiderPipeline(object):
         COMMENT_URL = item['COMMENT_URL']
         HEADLINE = item['HEADLINE']
         COMMENT_CONTENT = item['COMMENT_CONTENT']
-
-
         PUBLISHDATE = item['PUBLISHDATE']
         PUBLISHMODE = item['PUBLISHMODE']
         Supports = item['Supports']
