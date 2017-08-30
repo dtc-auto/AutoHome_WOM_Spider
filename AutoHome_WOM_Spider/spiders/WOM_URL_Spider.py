@@ -4,6 +4,8 @@ import re
 import requests
 import scrapy
 from lxml import etree
+from AutoHome_WOM_Spider.settings import *
+from AutoHome_WOM_Spider.modules.SAVE_WEB_SOURCE import Save_Source
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from AutoHome_WOM_Spider.modules.get_models import get_type_id
@@ -33,6 +35,14 @@ class UrlSpiderSpider(CrawlSpider):
     )
 
     def parse_item(self, response):
+
+        # 存储网页源代码
+        url = response.url
+        file_name = re.findall(r"spec\/(.+?)\/view", url)[0]
+        if SAVE_SOURCE_DATA == 1:
+            Save_Source(str(response.body), file_name)
+
+
         item = AutohomeWomSpiderItem()
         text_original = get_complete_text_autohome(response.text)
         text = etree.HTML(text_original)

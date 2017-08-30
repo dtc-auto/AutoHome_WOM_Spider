@@ -21,8 +21,14 @@ DATABASE_USER_PASSWORD = "ASdf1234"
 DATABASE_NAME = 'BDCI_AUTOHOME_new'
 DATABASE_HOST = '172.16.0.117'
 
+# 禁止重定向
+REDIRECT_ENABLED = False
+
 # 设置是否启动sql写入
 INTO_SQL = 1
+# 设置是否保存网页源代码
+SAVE_SOURCE_DATA = 1
+FILE = 'H:\Ge Jianyu\AutoHome_WOM_Spider\WEB_SOURCE'
 
 # 设置启动Spider
 STAR_SPIDER_NAME = 'WOM_URL_Spider'
@@ -36,7 +42,7 @@ FEED_FORMAT = 'CSV'
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 1
+CONCURRENT_REQUESTS = 64
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
