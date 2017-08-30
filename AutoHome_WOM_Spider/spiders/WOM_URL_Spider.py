@@ -59,11 +59,11 @@ class UrlSpiderSpider(CrawlSpider):
         item['COSTPERFORMSCORESCORE'] = str(score_list[7])
         item['PURCHASE_PURPOSE'] = str(','.join(text.xpath('.//p[@class="obje"]/text()')))
         item['HEADLINE'] = str(text.xpath('.//div[@class="kou-tit"]/h3/text()')[0])  # 标题
-        item['PUBLISHDATA'] = text.xpath('.//div[@class="mouth-item"]/div/div/b/text()')
+        item['PUBLISHDATE'] = text.xpath('.//div[@class="mouth-item"]/div/div/b/text()')
         # 定位最早发表评论时间
-        if type(item['PUBLISHDATA']) == list:
-            len_list = len(item['PUBLISHDATA'])
-            item['PUBLISHDATA'] = str(item['PUBLISHDATA'][len_list-1])
+        if type(item['PUBLISHDATE']) == list:
+            len_list = len(item['PUBLISHDATE'])
+            item['PUBLISHDATE'] = str(item['PUBLISHDATE'][len_list-1])
         item['PUBLISHMODE'] = str("".join(text.xpath('.//div[@class="title-name name-width-01"]/span/text()')))
         item['COMMENT_URL'] = str(response.url)
         item['Clicks'] = str(text.xpath('.//span[@class="fn-left font-arial mr-20"]/span/text()')[0])

@@ -67,7 +67,7 @@ class AutohomeWomSpiderPipeline(object):
         COMMENT_CONTENT = item['COMMENT_CONTENT']
 
 
-        PUBLISHDATA = item['PUBLISHDATA']
+        PUBLISHDATE = item['PUBLISHDATE']
         PUBLISHMODE = item['PUBLISHMODE']
         Supports = item['Supports']
         Clicks = item['Clicks']
@@ -80,14 +80,14 @@ class AutohomeWomSpiderPipeline(object):
         cur.execute("""INSERT INTO BDCI_AUTOHOME_new.stg.AutoHome_WOM_Source_Total_All
                               (CAR_ID,BRAND,MODELKEY,USERID,CITY,BUYDATE,PRICENET,PURCHASE_PURPOSE,FUELCONSUM,MILEAGE,SPACESCORE,
                               POWERSCORE,MANIPLTSCORE,FUELCONSUMSCORE,COMFORTSCORE,APPEARANCESCORE,INTERIORSCORE,COSTPERFORMSCORESCORE,
-                              COMMENT_URL,HEADLINE,COMMENT_CONTENT,PUBLISHDATA,PUBLISHMODE,Supports,Clicks,Comments
+                              COMMENT_URL,HEADLINE,COMMENT_CONTENT,PUBLISHDATE,PUBLISHMODE,Supports,Clicks,Comments
                               )
                           VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
                                   %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
                                   %s,%s,%s,%s,%s,%s)""",
                       (CAR_ID, BRAND, MODELKEY, USERID, CITY, BUYDATE, PRICENET, PURCHASE_PURPOSE, FUELCONSUM, MILEAGE,
                         SPACESCORE,POWERSCORE, MANIPLTSCORE, FUELCONSUMSCORE, COMFORTSCORE, APPEARANCESCORE, INTERIORSCORE, COSTPERFORMSCORESCORE, COMMENT_URL, HEADLINE,
-                        COMMENT_CONTENT,PUBLISHDATA, PUBLISHMODE, Supports, Clicks, Comments
+                        COMMENT_CONTENT,PUBLISHDATE, PUBLISHMODE, Supports, Clicks, Comments
                         ))
 
         self.conn.autocommit(False)

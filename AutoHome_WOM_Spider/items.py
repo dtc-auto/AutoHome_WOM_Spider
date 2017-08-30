@@ -55,7 +55,7 @@ class AutohomeWomSpiderItem(scrapy.Item):
     # 评论的内容
     COMMENT_CONTENT = scrapy.Field()
     # 发表时间
-    PUBLISHDATA = scrapy.Field()
+    PUBLISHDATE = scrapy.Field()
     # 发表方式
     PUBLISHMODE = scrapy.Field()
 
