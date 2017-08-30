@@ -30,7 +30,7 @@ class AutohomeWomSpiderPipeline(object):
         )
 
     def open_spider(self, spider):
-        self.conn = pymssql.connect(user=self.user, password=self.password, host=self.host, database=self.database)
+        self.conn = pymssql.connect(user=self.user, password=self.password, host=self.host, database=self.database, charset='utf8',)
 
     def process_item(self, item, spider):
         if self.into_sql == 1:
@@ -43,22 +43,52 @@ class AutohomeWomSpiderPipeline(object):
     def url_spider_into(self, item, spider):
         cur = self.conn.cursor()
         self.conn.autocommit(True)
+        CAR_ID = item['CAR_ID']
+        BRAND = item['BRAND']
+        MODELKEY = item['MODELKEY']
+        USERID = item['USERID']
+        CITY = item['CITY']
+        BUYDATE = item['BUYDATE']
+        PRICENET = item['PRICENET']
+        PURCHASE_PURPOSE = item['PURCHASE_PURPOSE']
+        FUELCONSUM = item['FUELCONSUM']
+        MILEAGE = item['MILEAGE']
 
-        create_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        last_update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        SPACESCORE = item['SPACESCORE']
+        POWERSCORE = item['POWERSCORE']
+        MANIPLTSCORE = item['MANIPLTSCORE']
+        FUELCONSUMSCORE = item['FUELCONSUMSCORE']
+        COMFORTSCORE = item['COMFORTSCORE']
+        APPEARANCESCORE = item['APPEARANCESCORE']
+        INTERIORSCORE = item['INTERIORSCORE']
+        COSTPERFORMSCORESCORE = item['COSTPERFORMSCORESCORE']
+        COMMENT_URL = item['COMMENT_URL']
+        HEADLINE = item['HEADLINE']
+        COMMENT_CONTENT = item['COMMENT_CONTENT']
 
-        cur.execute("""INSERT INTO BDCI_AUTOHOME_new.stg.AutoHome_WOM_Type
+
+        PUBLISHDATA = item['PUBLISHDATA']
+        PUBLISHMODE = item['PUBLISHMODE']
+        Supports = item['Supports']
+        Clicks = item['Clicks']
+        Comments = item['Comments']
+
+        # 设置时间
+        # last_update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        # create_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        cur.execute("""INSERT INTO BDCI_AUTOHOME_new.stg.AutoHome_WOM_Source_Total_All
                               (CAR_ID,BRAND,MODELKEY,USERID,CITY,BUYDATE,PRICENET,PURCHASE_PURPOSE,FUELCONSUM,MILEAGE,SPACESCORE,
                               POWERSCORE,MANIPLTSCORE,FUELCONSUMSCORE,COMFORTSCORE,APPEARANCESCORE,INTERIORSCORE,COSTPERFORMSCORESCORE,
-                              COMMENT_URL,HEADLINE,COMMENT_CONTENT,PUBLISHDATA,PUBLISHMODE,Supports,Clicks,Comments,
-                              create_time, last_update_time)
+                              COMMENT_URL,HEADLINE,COMMENT_CONTENT,PUBLISHDATA,PUBLISHMODE,Supports,Clicks,Comments
+                              )
                           VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
                                   %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                                  %s,%s,%s,%s,%s,%s,%s,%s)"""
-                    , (item['CAR_ID'], item['BRAND'], item['MODELKEY'], item['USERID'], item['CITY'], item['BUYDATE'], item['PRICENET'], item['PURCHASE_PURPOSE'], item['FUELCONSUM'], item['MILEAGE'],
-                       item['SPACESCORE'],item['POWERSCORE'], item['MANIPLTSCORE'], item['FUELCONSUMSCORE'], item['COMFORTSCORE'], item['APPEARANCESCORE'], item['INTERIORSCORE'], item['COSTPERFORMSCORESCORE'], item['COMMENT_URL'], item['HEADLINE'],
-                       item['COMMENT_CONTENT'],item['PUBLISHDATA'], item['PUBLISHMODE'], item['Supports'], item['Clicks'], item['Comments'],
-                       create_time, last_update_time))
+                                  %s,%s,%s,%s,%s,%s)""",
+                      (CAR_ID, BRAND, MODELKEY, USERID, CITY, BUYDATE, PRICENET, PURCHASE_PURPOSE, FUELCONSUM, MILEAGE,
+                        SPACESCORE,POWERSCORE, MANIPLTSCORE, FUELCONSUMSCORE, COMFORTSCORE, APPEARANCESCORE, INTERIORSCORE, COSTPERFORMSCORESCORE, COMMENT_URL, HEADLINE,
+                        COMMENT_CONTENT,PUBLISHDATA, PUBLISHMODE, Supports, Clicks, Comments
+                        ))
 
         self.conn.autocommit(False)
         self.conn.commit()
