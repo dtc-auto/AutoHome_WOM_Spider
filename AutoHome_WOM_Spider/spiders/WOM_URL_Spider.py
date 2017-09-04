@@ -42,10 +42,9 @@ class UrlSpiderSpider(CrawlSpider):
         if SAVE_SOURCE_DATA == 1:
             Save_Source(str(response.body), file_name)
 
-
         item = AutohomeWomSpiderItem()
-        text_original = get_complete_text_autohome(response.text)
-        text = etree.HTML(text_original)
+        #text_original = get_complete_text_autohome(response.text)
+        text = etree.HTML(response.text)
         item['USERID'] = str(text.xpath('.//a[@id="ahref_UserId"]/text()')[0])
         car_name_list = text.xpath('.//dl[@class="choose-dl"]/dd/a/text()')
         item['CAR_ID'] = str(text.xpath('.//dl[@class="choose-dl"]/dd/a/@href')[1].replace("/", "").replace("spec", ""))
@@ -57,7 +56,13 @@ class UrlSpiderSpider(CrawlSpider):
         FUELCONSUM_MILEAGE_list = text.xpath('.//dd[@class="font-arial bg-blue"]/p/text()')
         if FUELCONSUM_MILEAGE_list:
             item['FUELCONSUM'] = str(FUELCONSUM_MILEAGE_list[0])
-            item['MILEAGE'] = str(FUELCONSUM_MILEAGE_list[1])
+            if len(FUELCONSUM_MILEAGE_list) == 2:
+                item['MILEAGE'] = str(FUELCONSUM_MILEAGE_list[1])
+            else:
+                item['MILEAGE'] = ''
+        else:
+            item['FUELCONSUM'] = ''
+            item['MILEAGE'] = ''
         score_list = text.xpath('.//span[@class="font-arial c333"]/text()')
         item['SPACESCORE'] = str(score_list[0])
         item['POWERSCORE'] = str(score_list[1])

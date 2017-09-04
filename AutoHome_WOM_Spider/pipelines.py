@@ -74,20 +74,21 @@ class AutohomeWomSpiderPipeline(object):
         Comments = item['Comments']
 
         # 设置时间
-        # last_update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        # create_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        last_update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        create_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        cur.execute("""INSERT INTO BDCI_AUTOHOME_new.stg.AutoHome_WOM_Source_Total_All
+        cur.execute("""INSERT INTO BDCI_AUTOHOME_new.stg.AutoHome_WOM_all
                               (CAR_ID,BRAND,MODELKEY,USERID,CITY,BUYDATE,PRICENET,PURCHASE_PURPOSE,FUELCONSUM,MILEAGE,SPACESCORE,
                               POWERSCORE,MANIPLTSCORE,FUELCONSUMSCORE,COMFORTSCORE,APPEARANCESCORE,INTERIORSCORE,COSTPERFORMSCORESCORE,
-                              COMMENT_URL,HEADLINE,COMMENT_CONTENT,PUBLISHDATE,PUBLISHMODE,Supports,Clicks,Comments
+                              COMMENT_URL,HEADLINE,COMMENT_CONTENT,PUBLISHDATE,PUBLISHMODE,Supports,Clicks,Comments,
+                              last_update_time,create_time
                               )
                           VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
                                   %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                                  %s,%s,%s,%s,%s,%s)""",
+                                  %s,%s,%s,%s,%s,%s,%s,%s)""",
                       (CAR_ID, BRAND, MODELKEY, USERID, CITY, BUYDATE, PRICENET, PURCHASE_PURPOSE, FUELCONSUM, MILEAGE,
                         SPACESCORE,POWERSCORE, MANIPLTSCORE, FUELCONSUMSCORE, COMFORTSCORE, APPEARANCESCORE, INTERIORSCORE, COSTPERFORMSCORESCORE, COMMENT_URL, HEADLINE,
-                        COMMENT_CONTENT,PUBLISHDATE, PUBLISHMODE, Supports, Clicks, Comments
+                        COMMENT_CONTENT,PUBLISHDATE, PUBLISHMODE, Supports, Clicks, Comments, last_update_time, create_time
                         ))
 
         self.conn.autocommit(False)
