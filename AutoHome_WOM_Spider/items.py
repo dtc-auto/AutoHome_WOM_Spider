@@ -15,7 +15,7 @@ class AutohomeWomSpiderItem(scrapy.Item):
     BRAND = scrapy.Field()
     MODELKEY = scrapy.Field()
 
-    # 用户名
+    # 用户名1
     USERID = scrapy.Field()
 
     # 购买地点

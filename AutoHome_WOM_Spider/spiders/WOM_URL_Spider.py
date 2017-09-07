@@ -24,9 +24,9 @@ class UrlSpiderSpider(CrawlSpider):
         reqs.append(req_0)
         reqs.append(req_1)
     start_urls = list(set(reqs))
-    # start_urls = ["http://k.autohome.com.cn/spec/16903/#pvareaid=102175"]
+    # start_urls = ["http://k.autohome.com.cn/616/stopselling"]
     xpath = {
-        'post': './/div[@class="title-name name-width-01"]/a',
+        'post': './/div[@class="title-name name-width-01"]/b/a',
         'next_page': './/a[@class="page-item-next"]'
     }
     rules = (
@@ -35,7 +35,7 @@ class UrlSpiderSpider(CrawlSpider):
     )
 
     def parse_item(self, response):
-
+        # print(response.url)
         # 存储网页源代码
         url = response.url
         file_name = re.findall(r"spec\/(.+?)\/view", url)[0]
@@ -73,7 +73,13 @@ class UrlSpiderSpider(CrawlSpider):
         item['INTERIORSCORE'] = str(score_list[6])
         item['COSTPERFORMSCORESCORE'] = str(score_list[7])
         item['PURCHASE_PURPOSE'] = str(','.join(text.xpath('.//p[@class="obje"]/text()')))
-        item['HEADLINE'] = str(text.xpath('.//div[@class="kou-tit"]/h3/text()')[0])  # 标题
+        # item['HEADLINE'] = str(text.xpath('.//div[@class="kou-tit"]/h3/text()')) # 标题
+        headline_list = str(text.xpath('.//div[@class="kou-tit"]/h3/text()')) # 标题
+        if headline_list:
+            item['HEADLINE'] = headline_list[0]
+        else:
+            item['HEADLINE'] = ''
+
         item['PUBLISHDATE'] = text.xpath('.//div[@class="mouth-item"]/div/div/b/text()')
         # 定位最早发表评论时间
         if type(item['PUBLISHDATE']) == list:
