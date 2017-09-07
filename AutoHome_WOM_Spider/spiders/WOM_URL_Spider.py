@@ -15,7 +15,7 @@ from AutoHome_WOM_Spider.modules.Restore import get_complete_text_autohome
 
 class UrlSpiderSpider(CrawlSpider):
     name = "WOM_URL_Spider"
-
+    # 爬取网页构建车款口碑的入口
     reqs = []
     car_id_list = get_type_id()
     for i in car_id_list:  # i代表从车型的遍历
@@ -35,16 +35,22 @@ class UrlSpiderSpider(CrawlSpider):
     )
 
     def parse_item(self, response):
-        # print(response.url)
+        """
+        原始页面存在加密，本方法输入原始页面响应后进行解密，将解密后的内容使用xpath检索
+        处理报错问题：将原始页面截断，保留有用内容
+        :param response:
+        :return:
+        """
         # 存储网页源代码
         url = response.url
         file_name = re.findall(r"spec\/(.+?)\/view", url)[0]
         if SAVE_SOURCE_DATA == 1:
             Save_Source(str(response.body), file_name)
-
+        # 实例化item
         item = AutohomeWomSpiderItem()
-        #text_original = get_complete_text_autohome(response.text)
+        # 将解码后的文本构建为HTML
         text = etree.HTML(response.text)
+        # 解析HTML
         item['USERID'] = str(text.xpath('.//a[@id="ahref_UserId"]/text()')[0])
         car_name_list = text.xpath('.//dl[@class="choose-dl"]/dd/a/text()')
         item['CAR_ID'] = str(text.xpath('.//dl[@class="choose-dl"]/dd/a/@href')[1].replace("/", "").replace("spec", ""))
@@ -53,6 +59,7 @@ class UrlSpiderSpider(CrawlSpider):
         item['MODELKEY'] = str(car_name_list[1])
         item['BUYDATE'] = str(text.xpath('.//dd[@class="font-arial bg-blue"]/text()')[0])
         item['PRICENET'] = str(text.xpath('.//dd[@class="font-arial bg-blue"]/text()')[1].replace("\n", "").replace("\r", "").replace(" ", ""))
+        # 定位油耗、公里数
         FUELCONSUM_MILEAGE_list = text.xpath('.//dd[@class="font-arial bg-blue"]/p/text()')
         if FUELCONSUM_MILEAGE_list:
             item['FUELCONSUM'] = str(FUELCONSUM_MILEAGE_list[0])
@@ -63,6 +70,7 @@ class UrlSpiderSpider(CrawlSpider):
         else:
             item['FUELCONSUM'] = ''
             item['MILEAGE'] = ''
+        # 定位评分
         score_list = text.xpath('.//span[@class="font-arial c333"]/text()')
         item['SPACESCORE'] = str(score_list[0])
         item['POWERSCORE'] = str(score_list[1])
@@ -73,34 +81,31 @@ class UrlSpiderSpider(CrawlSpider):
         item['INTERIORSCORE'] = str(score_list[6])
         item['COSTPERFORMSCORESCORE'] = str(score_list[7])
         item['PURCHASE_PURPOSE'] = str(','.join(text.xpath('.//p[@class="obje"]/text()')))
+        # 定位标题
         # item['HEADLINE'] = str(text.xpath('.//div[@class="kou-tit"]/h3/text()')) # 标题
         headline_list = str(text.xpath('.//div[@class="kou-tit"]/h3/text()')) # 标题
         if headline_list:
             item['HEADLINE'] = headline_list[0]
         else:
             item['HEADLINE'] = ''
-
+        # 定位发表时间
         item['PUBLISHDATE'] = text.xpath('.//div[@class="mouth-item"]/div/div/b/text()')
+
         # 定位最早发表评论时间
         if type(item['PUBLISHDATE']) == list:
             len_list = len(item['PUBLISHDATE'])
             item['PUBLISHDATE'] = str(item['PUBLISHDATE'][len_list-1])
+
         item['PUBLISHMODE'] = str("".join(text.xpath('.//div[@class="title-name name-width-01"]/span/text()')))
         item['COMMENT_URL'] = str(response.url)
         item['Clicks'] = str(text.xpath('.//span[@class="fn-left font-arial mr-20"]/span/text()')[0])
         item['Supports'] = str(text.xpath('.//label[@class="supportNumber"]/text()')[0])
         item['Comments'] = str(text.xpath('.//span[@class="font-arial CommentNumber"]/text()')[0])
 
-        #  设置断点
-        # pattern = re.compile("class=\"kou-tit\"(.*)", re.S)
-        # text_original_cut = re.findall(pattern, response.text)[0]
-        # text_original_cut = get_complete_text_autohome(text_original_cut)
-        # item['COMMENT_CONTENT'] = re.search("<!--@HS_BASE64@-->.*<!--@HS_ZY@-->", text_original_cut).group().replace("<!--@HS_BASE64@-->","").replace("<!--@HS_ZY@-->", "").replace("<br/>","")
-
-
-        #response.encoding = "gbk"
+        #  截断源代码
         pattern = re.compile("class=\"kou-tit\"(.*)", re.S)
         text = re.findall(pattern, response.text)[0]
+        # 将原始网页进行解码
         text = get_complete_text_autohome(text)
         item['COMMENT_CONTENT'] = str(re.search("<!--@HS_BASE64@-->.*<!--@HS_ZY@-->", text).group().replace(
             "<!--@HS_BASE64@-->", "").replace("<!--@HS_ZY@-->", "").replace("<br/>", ""))
