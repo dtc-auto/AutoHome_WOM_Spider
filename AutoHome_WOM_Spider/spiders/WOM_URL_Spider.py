@@ -85,7 +85,7 @@ class UrlSpiderSpider(CrawlSpider):
         # item['HEADLINE'] = str(text.xpath('.//div[@class="kou-tit"]/h3/text()')) # 标题
         headline_list = str(text.xpath('.//div[@class="kou-tit"]/h3/text()')) # 标题
         if headline_list:
-            item['HEADLINE'] = headline_list[0]
+            item['HEADLINE'] = headline_list[2:-2]
         else:
             item['HEADLINE'] = ''
         # 定位发表时间

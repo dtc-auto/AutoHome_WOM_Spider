@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = 'AutoHome_WOM_Spider.spiders'
 
 DATABASE_SERVER_NAME = "sqldev02\sql"
 DATABASE_USER_NAME = "spider"
-DATABASE_USER_PASSWORD = "ASdf1234"
+DATABASE_USER_PASSWORD = "i8ae8y.gejianyu8"
 DATABASE_NAME = 'BDCI_AUTOHOME_new'
 DATABASE_HOST = '172.16.0.117'
 
@@ -25,9 +25,9 @@ DATABASE_HOST = '172.16.0.117'
 REDIRECT_ENABLED = False
 
 # 设置是否启动sql写入
-INTO_SQL = 1
+INTO_SQL = 0
 # 设置是否保存网页源代码
-SAVE_SOURCE_DATA = 1
+SAVE_SOURCE_DATA = 0
 FILE = 'H:\Ge Jianyu\AutoHome_WOM_Spider\WEB_SOURCE'
 
 # 设置启动Spider
